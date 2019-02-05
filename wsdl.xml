@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions 
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="urn:ZSI"
+  targetNamespace="urn:ZSI" >
+
+  <types>
+    <xsd:schema elementFormDefault="qualified" 
+        targetNamespace="urn:ZSI">
+      <xsd:element name="Time">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="value" type="xsd:anyType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </types>
+
+  <message name="TimeRequest">
+    <part name="parameters" element="tns:Time" />
+  </message>
+  <message name="TimeResponse">
+    <part name="parameters" element="tns:Time"/>
+  </message>
+
+  <portType name="TimeServer">
+    <operation name="Time">
+      <input message="tns:TimeRequest"/>
+      <output message="tns:TimeResponse"/>
+    </operation>
+  </portType>
+
+  <binding name="TimeServer" type="tns:TimeServer">
+    <soap:binding style="document" 
+                  transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="Time">
+      <soap:operation soapAction="Time"/>
+      <input>
+        <soap:body use="literal"/> 
+      </input>
+      <output>
+        <soap:body use="literal"/> 
+      </output>
+    </operation>
+  </binding>
+
+  <service name="TimeServer">
+    <port name="TimeServer" binding="tns:TimeServer">
+      <soap:address location="http://localhost:7000"/>
+    </port>
+  </service>
+
+</definitions>
