@@ -9,7 +9,7 @@ class timeNow(Resource):
         now = time.time()
         currTime = [
             {
-                "time" : str(now)
+                "time" : now
             }
         ]
         print("Server time: ", now)
