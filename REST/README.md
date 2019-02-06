@@ -1,3 +1,5 @@
+This project was written in Python 3.0
+
 Install packages:
 `
 pip install -r requirements.txt
