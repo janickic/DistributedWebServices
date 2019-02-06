@@ -1,6 +1,4 @@
-import os
-import sys
-import time
+import os, sys, time
 from TimeServer_client import *
 from ZSI.twisted.wsgi import (SOAPApplication,
                               soapmethod,
