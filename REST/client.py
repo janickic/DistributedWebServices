@@ -1,5 +1,12 @@
-import requests, json
+import requests, json, sys
 
-response = requests.get("http://127.0.0.1:5000/time")
+if len(sys.argv) < 2:
+    print "Please insert IP of server"
+    sys.exit()
+
+ip = sys.argv[1]
+print 'Server ip:', ip
+
+response = requests.get("http://"+ip+":5000/time")
 serverTime = response.json()
 print "Server time: ", serverTime["time"]

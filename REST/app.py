@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
-import time
+import time, getip
 app = Flask(__name__)
 api = Api(app)
 
@@ -18,4 +18,5 @@ class timeNow(Resource):
 
 api.add_resource(timeNow, "/time")
 
-app.run(debug=True)
+ip = getip.get()
+app.run(host=str(ip), debug=True)
