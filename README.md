@@ -3,6 +3,9 @@ This project was written in Python 2.7
 Install packages: 
 `
 sudo apt install python-zsi
+`
+
+`
 pip install -r requirements.txt
 `
 
