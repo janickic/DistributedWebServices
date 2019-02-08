@@ -63,7 +63,13 @@ def main():
         'reminders': {
             'useDefault': False,
         },
-        'visibility': "public"
+        'visibility': "public",
+        "attendees": [
+            {
+                "displayName": "Professor Michael Collins",
+                "email": "drmichael@fakeschool.ca",
+            },
+        ],
     }
     insert_result = service.events().insert(calendarId='primary', body = new_event_body).execute()
     print('New event added:')
