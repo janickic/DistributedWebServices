@@ -15,4 +15,4 @@ Download client configuration and put the resulting ```credentials.json``` in th
 python calendar431.py
 `
 
-###### Note: First time will redirect to a webpage to give access to users calendar.
+###### Note: First time will redirect to a webpage to give access to user's calendar.

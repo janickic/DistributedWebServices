@@ -2,22 +2,32 @@
 from TimeServer_client import *
 import sys, time
 
+# Check IP of server
 if len(sys.argv) < 2:
     print "Please insert IP of server"
     sys.exit()
 
 ip = sys.argv[1]
-print 'Server ip:', ip
+print "Server ip: ", ip 
 
-
-# get a port proxy instance
+# Get a port proxy instance
 loc  = TimeServerLocator()
+# Find server location
 port = loc.getTimeServer(url='http://'+ip+':7000/Time')
-
-# create new request
+# Create new request
 req = TimeRequest()
-# call the remote method
+# Get time before remote call
+start = time.time()
+# Call the remote method
 resp = port.Time(req)
-# print the resulting quotation
-print resp._value
-print "Current time on Server: ", resp._value
+
+# Get response value
+serverTime = resp._value
+# Calculate rtt
+end = time.time()
+rtt = (end - start) / 2
+updatedTime = serverTime + rtt
+# Print results
+print "Server time:\t ", serverTime
+print "RTT:\t\t ", rtt
+print "Updated time:\t ", updatedTime
