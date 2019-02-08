@@ -6,25 +6,17 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
+# Defines permissions needed for calendar access
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly',
-'https://www.googleapis.com/auth/calendar',
-'https://www.googleapis.com/auth/calendar.events',
-'https://www.googleapis.com/auth/calendar.events.readonly',
-'https://www.googleapis.com/auth/calendar.readonly']
+SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 
 def main():
-    """Shows basic usage of the Google Calendar API.
-    Prints the start and name of the next 10 events on the user's calendar.
-    """
     creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
+    # If it exists, uses token file to load credentials
     if os.path.exists('token.pickle'):
         with open('token.pickle', 'rb') as token:
             creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
+    # If no (valid) credentials available, take the user to login page
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
@@ -32,23 +24,27 @@ def main():
             flow = InstalledAppFlow.from_client_secrets_file(
                 'credentials.json', SCOPES)
             creds = flow.run_local_server()
-        # Save the credentials for the next run
+        # Saves credentials in pickle file
         with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
 
+    # Prepares calendar api for use
     service = build('calendar', 'v3', credentials=creds)
 
-    # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
     print('Getting the upcoming events')
-    events_result = service.events().list(calendarId='primary', timeMin=now,singleEvents=True, orderBy='startTime').execute()
+
+    # Fetches all events with starting dates from now
+    events_result = service.events().list(calendarId='primary', timeMin=now, singleEvents=True, orderBy='startTime').execute()
     events = events_result.get('items', [])
     if not events:
         print('No upcoming events found.')
+    # Prints out event starting time and name
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         print(start, event['summary'])
 
+    # Creates information for new event
     new_event_body = {
         "summary": "Meeting with Prof Collins",
         "location":"Simon Fraser University, Burnaby, Canada",
@@ -71,7 +67,11 @@ def main():
             },
         ],
     }
+
+    # Inserts new event into primary calendar
     insert_result = service.events().insert(calendarId='primary', body = new_event_body).execute()
+    
+    #Prints out link to new event
     print('New event added:')
     print(insert_result.get('htmlLink'))
 
